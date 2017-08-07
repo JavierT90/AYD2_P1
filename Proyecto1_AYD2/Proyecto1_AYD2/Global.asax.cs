@@ -14,5 +14,6 @@ namespace Proyecto1_AYD2
             AreaRegistration.RegisterAllAreas();
             RouteConfig.RegisterRoutes(RouteTable.Routes);
         }
+
     }
 }
