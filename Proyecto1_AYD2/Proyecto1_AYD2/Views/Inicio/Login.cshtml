@@ -1,0 +1,49 @@
+﻿@{
+    ViewBag.Title = "Login";
+}
+
+@*<div>
+        <center>
+            <form>
+                <div class="form-group">
+                    <label for="tbxUsuario">Nombre de Usuario:</label>
+                    <input type="text" class="form-control" id="tbxUsuario">
+                </div>
+                <div class="form-group">
+                    <label for="tbxPassword">Password:</label>
+                    <input type="password" class="form-control" id="tbxPassword">
+                </div>
+                <button type="submit" class="btn btn-default">Iniciar Sesión</button>
+            </form>
+        </center>
+    </div>*@
+@model Proyecto1_AYD2.Models.mdlUsuario
+<center>
+    <h2>Login</h2>
+    <br />
+    <div class="form-group">
+        @using (Html.BeginForm("Login", "Inicio", FormMethod.Post))
+        {
+
+            <div>
+                @Html.LabelFor(modelo => modelo.NombreUsuario)
+            </div>
+            <div>
+                @Html.TextBoxFor(model => model.NombreUsuario)
+                @Html.ValidationMessageFor(model => model.NombreUsuario)
+            </div>
+            <div>
+                @Html.LabelFor(modelo => modelo.Password)
+            </div>
+            <div>
+                @Html.PasswordFor(model => model.Password)
+                @Html.ValidationMessageFor(model => model.Password)
+            </div>
+            <br />
+            <br />
+            <div>
+                <button type="submit" class="btn btn-default">Iniciar Sesión</button>
+            </div>
+        }
+    </div>
+</center>

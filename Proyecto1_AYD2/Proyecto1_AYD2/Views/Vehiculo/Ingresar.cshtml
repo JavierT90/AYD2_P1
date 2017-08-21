@@ -1,0 +1,162 @@
+﻿@model Proyecto1_AYD2.Models.protoVehiculo
+
+@{
+    ViewBag.Title = "Ingresar Vehículo";
+}
+
+<h2>Ingresar</h2>
+
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.Marca, htmlAttributes: new { @class = "control-label col-md-2"})
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Marca, new { htmlAttributes = new { @class = "form-control" , @id = "tbxMarca" } })
+                @Html.ValidationMessageFor(model => model.Marca, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Modelo, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Modelo, new { htmlAttributes = new { @class = "form-control", @id = "tbxModelo" } })
+                @Html.ValidationMessageFor(model => model.Modelo, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.MotorCC, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.MotorCC, new { htmlAttributes = new { @class = "form-control", @id = "tbxMotorCC" } })
+                @Html.ValidationMessageFor(model => model.MotorCC, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Color, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Color, new { htmlAttributes = new { @class = "form-control", @id = "tbxColor" } })
+                @Html.ValidationMessageFor(model => model.Color, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Tipo, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Tipo, new { htmlAttributes = new { @class = "form-control", @id = "tbxTipo" } })
+                @Html.ValidationMessageFor(model => model.Tipo, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Linea, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Linea, new { htmlAttributes = new { @class = "form-control", @id = "tbxLinea" } })
+                @Html.ValidationMessageFor(model => model.Linea, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.CantidadEjes, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.CantidadEjes, new { htmlAttributes = new { @class = "form-control", @id = "tbxEjes" } })
+                @Html.ValidationMessageFor(model => model.CantidadEjes, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Traccion, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Traccion, new { htmlAttributes = new { @class = "form-control", @id = "tbxTraccion" } })
+                @Html.ValidationMessageFor(model => model.Traccion, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-5">
+                <input type="submit" value="Crear" class="btn btn-default" />
+                <input type="button" id="btnAplicarPrototipo" value="Obtener valores por Defecto" class="btn btn-default" />
+            </div>
+            <br />
+            <br />
+            <div class="col-md-offset-2 col-md-5">
+                <input type="button" id="btnDefault" value="Establecer por Defecto" class="btn btn-default" />
+                
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        console.log("ready!");
+
+        document.getElementById("btnDefault").onclick = function () { setDefault() };
+        document.getElementById("btnAplicarPrototipo").onclick = function () { GetDefault() };
+    });
+
+    function GetDefault()
+    {
+        var url = "/Vehiculo/ObtenerVehiculoDefecto";
+        $.ajax({
+            type: "POST",
+            data: {},
+            url: url,
+            contentType: "application/json",
+        }).done(function (res) {
+            $("#tbxColor").val(res.Color);
+            $("#tbxEjes").val(res.CantidadEjes);
+            $("#tbxTraccion").val(res.Traccion);
+            $("#tbxMotorCC").val(res.MotorCC);
+            $("#tbxTipo").val(res.Tipo);
+        });
+    }
+
+    function setDefault()
+    {
+        var ModeloVehiculo = {
+            Marca :$("#tbxMarca").val(),
+            Modelo: $("#tbxModelo").val(),
+            MotorCC: $("#tbxMotorCC").val(),
+            Color: $("#tbxColor").val(),
+            Linea: $("#tbxLinea").val(),
+            Tipo: $("#tbxTipo").val(),
+            CantidadEjes: $("#tbxEjes").val(),
+            Traccion: $("#tbxTraccion").val()
+        };
+        //alert("ALV" + b);
+        var url = "/Vehiculo/EstablecerPorDefecto";
+        $.ajax({
+            type: "POST",
+            data: JSON.stringify(ModeloVehiculo),
+            url: url,
+            contentType: "application/json"
+        }).done(function (res) {
+            alert(res);
+        });
+    }
+
+    function setDefault2() {
+        var url = "/Vehiculo/ObtenerVehiculoDefecto";
+        $.ajax({
+            type: "POST",
+            data: "",
+            url: url,
+            contentType: "application/json"
+        }).done(function (res) {
+            alert(res);
+        });
+    }
+
+    
+</script>
